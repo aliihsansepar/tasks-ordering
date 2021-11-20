@@ -1,16 +1,21 @@
 <?php
 
-namespace App\Models;
+    namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+    use Illuminate\Database\Eloquent\Factories\HasFactory;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Task extends Model
-{
-    use HasFactory, SoftDeletes;
+    class Task extends Model
+    {
+        use HasFactory, SoftDeletes;
 
-    protected $fillable= ['title', 'type', 'prerequisites', 'country'];
-    protected $table = 'tasks';
-    public $timestamps = true;
-}
+        public $timestamps = true;
+        protected $fillable = ['title', 'type', 'prerequisites', 'country'];
+        protected $table = 'tasks';
+
+        public function amount()
+        {
+            return $this->hasOne(Task::class, 'id', 'task_id');
+        }
+    }
