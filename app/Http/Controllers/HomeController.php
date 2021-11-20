@@ -27,6 +27,8 @@
         public function index()
         {
             $tasks = $this->taskService->getTasks();
-            return view('welcome', compact('tasks'));
+            dd($tasks);
+            return view('home', compact('tasks'));
         }
+
     }

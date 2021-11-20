@@ -10,9 +10,9 @@
     interface TaskInterface
     {
         /**
-         * @return array
+         * @return object
          */
-        public function getTasks(): array;
+        public function getTasks(): object;
 
         /**
          * @param string $id
@@ -22,19 +22,19 @@
 
         /**
          * @param CreateTask $request
-         * @return array
+         * @return array|null
          */
-        public function createTask(CreateTask $request): array;
+        public function createTask(CreateTask $request): ?array;
 
         /**
          * @param UpdateTask $request
-         * @return array
+         * @return array|null
          */
-        public function updateTask(UpdateTask $request): array;
+        public function updateTask(UpdateTask $request): ?array;
 
         /**
          * @param $id
-         * @return array
+         * @return array|null
          */
-        public function deleteTask($id): array;
+        public function deleteTask($id): ?array;
     }

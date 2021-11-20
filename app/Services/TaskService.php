@@ -4,7 +4,9 @@
     namespace App\Services;
 
 
+    use App\Http\Requests\CreateTask;
     use App\Interfaces\TaskInterface;
+    use ArrayIterator;
 
     class TaskService
     {
@@ -23,10 +25,53 @@
         }
 
         /**
-         * @return array
+         * @return object
          */
-        public function getTasks(): array
+        public function getTasks(): object
         {
-            return $this->taskRepository->getTasks();
+            $tasks = $this->taskRepository->getTasks();
+            return $this->orderTasks($tasks->toArray());
+        }
+
+
+        /**
+         * @param $tasks
+         * @return array|string
+         */
+        private function orderTasks($tasks): array
+        {
+            $completedTasks = [];
+            $array_iterator = new ArrayIterator($tasks);
+            $error_iterator = 0;
+
+            foreach ($array_iterator as $task) {
+                if (empty($task['prerequisites'])) {
+                    $completedTasks[$task['id']] = $task;
+                } else {
+                    foreach ($task['prerequisites'] as $prerequisity) {
+                        if (isset($completedTasks[$prerequisity])) {
+                            $completedTasks[$task['id']] = $task;
+                        } else {
+                            $array_iterator[$prerequisity] = $task;
+                        }
+                    }
+                }
+                $error_iterator++;
+                if ($error_iterator > count($array_iterator)) {
+                    $completedTasks[] = ['Please Check Order. The order must be correct for the tasks to begin.'];
+                    break;
+                }
+            }
+            dd($completedTasks, 1);
+            return $completedTasks;
+        }
+
+        /**
+         * @param CreateTask $request
+         * @return array|null
+         */
+        public function createTask(CreateTask $request): ?array
+        {
+            return $this->taskRepository->createTask($request);
         }
     }
