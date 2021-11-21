@@ -35,20 +35,10 @@
                         'text' => $task['title'],
                     ];
                 }
-            }else {
+            } else {
                 $tasks = $tasks['message'];
             }
 
             return view('home', compact('tasks', 'tasksForSelect'));
         }
-        public function getTasksJson()
-        {
-            $tasks = $this->taskService->getTasks();
-            $tasksForSelect = [];
-            foreach ($tasks as $task) {
-                $tasksForSelect[$task['id']] = $task['title'];
-            }
-            return response()->json(['tasks' => $tasksForSelect]);
-        }
-
     }
