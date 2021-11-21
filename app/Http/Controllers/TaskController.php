@@ -35,9 +35,4 @@
             $response = $this->taskService->createTask($request);
             return response()->json($response);
         }
-
-        public function reOrderTasks()
-        {
-
-        }
     }

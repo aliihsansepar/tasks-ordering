@@ -26,9 +26,29 @@
          */
         public function index()
         {
+            $tasksForSelect = [];
             $tasks = $this->taskService->getTasks();
-            dd($tasks);
-            return view('home', compact('tasks'));
+            if (!isset($tasks['status'])) {
+                foreach ($tasks as $task) {
+                    $tasksForSelect[] = [
+                        'id' => $task['id'],
+                        'text' => $task['title'],
+                    ];
+                }
+            }else {
+                $tasks = $tasks['message'];
+            }
+
+            return view('home', compact('tasks', 'tasksForSelect'));
+        }
+        public function getTasksJson()
+        {
+            $tasks = $this->taskService->getTasks();
+            $tasksForSelect = [];
+            foreach ($tasks as $task) {
+                $tasksForSelect[$task['id']] = $task['title'];
+            }
+            return response()->json(['tasks' => $tasksForSelect]);
         }
 
     }
