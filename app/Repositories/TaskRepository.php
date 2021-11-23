@@ -9,6 +9,8 @@
     use App\Interfaces\TaskInterface;
     use App\Models\Amount;
     use App\Models\Task;
+    use Illuminate\Http\JsonResponse;
+    use Illuminate\Http\Request;
 
     class TaskRepository implements TaskInterface
     {
@@ -71,5 +73,13 @@
         public function deleteTask($id): ?array
         {
             // TODO: Implement deleteTask() method.
+        }
+
+        public function addPrerequisites(Request $request): ?array
+        {
+            $task = Task::find($request->task_id);
+            $task->prerequisites = collect($task->prerequisites)->merge($request->prerequisites);
+            $task->save();
+            return ['messsage' =>  $task->title . ' Prerequisites Added Successfuly', 'status' => 1];
         }
     }

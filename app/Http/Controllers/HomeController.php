@@ -21,24 +21,11 @@
         }
 
         /**
-         * @param null
-         * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+         * @return \Illuminate\Http\JsonResponse
          */
-        public function index()
+        public function index(): \Illuminate\Http\JsonResponse
         {
-            $tasksForSelect = [];
             $tasks = $this->taskService->getTasks();
-            if (!isset($tasks['status'])) {
-                foreach ($tasks as $task) {
-                    $tasksForSelect[] = [
-                        'id' => $task['id'],
-                        'text' => $task['title'],
-                    ];
-                }
-            } else {
-                $tasks = $tasks['message'];
-            }
-
-            return view('home', compact('tasks', 'tasksForSelect'));
+            return response()->json($tasks);
         }
     }

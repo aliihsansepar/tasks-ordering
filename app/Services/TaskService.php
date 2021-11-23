@@ -7,6 +7,7 @@
     use App\Http\Requests\CreateTask;
     use App\Interfaces\TaskInterface;
     use ArrayIterator;
+    use Illuminate\Http\Request;
 
     class TaskService
     {
@@ -25,20 +26,37 @@
         }
 
         /**
-         * @return array
+         * @return object
          */
-        public function getTasks(): array
+        public function getTasks(): object
         {
-            $tasks = $this->taskRepository->getTasks();
-            return $this->orderTasks($tasks->toArray());
+            return $this->taskRepository->getTasks();
         }
 
         /**
-         * @param array $tasks
-         * @return array|string
+         * @param CreateTask $request
+         * @return array|null
          */
-        private function orderTasks(array $tasks): array
+        public function createTask(CreateTask $request): ?array
         {
+            return $this->taskRepository->createTask($request);
+        }
+
+        /**
+         * @param Request $request
+         * @return mixed
+         */
+        public function addPrerequisites(Request $request)
+        {
+            return $this->taskRepository->addPrerequisites($request);
+        }
+
+        /**
+         * @return array
+         */
+        public function orderTasks(): array
+        {
+            $tasks = $this->getTasks()->toArray();
             $completedTasks = [];
             $array_iterator = new ArrayIterator($tasks);
             $error_iterator = 0;
@@ -89,14 +107,5 @@
         private function in_array_all(array $needles, array $haystack)
         {
             return empty(array_diff($needles, $haystack));
-        }
-
-        /**
-         * @param CreateTask $request
-         * @return array|null
-         */
-        public function createTask(CreateTask $request): ?array
-        {
-            return $this->taskRepository->createTask($request);
         }
     }
