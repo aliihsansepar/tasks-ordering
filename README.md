@@ -19,10 +19,10 @@ $ cd .laradock && cp .env.example .env
 $ docker-compose up -d nginx mysql phpmyadmin
 ```
 ```bash
-$ docker-compose up -d nginx mysql phpmyadmin
+$ docker-compose exec workspace bash
 ```
 ```bash
-$ docker-compose exec workpace bash && art migrate
+$ composer update && art migrate
 ```
 
 # EndPoint Usage
