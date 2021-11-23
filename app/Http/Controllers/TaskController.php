@@ -6,6 +6,7 @@
 
     use App\Http\Requests\CreateTask;
     use App\Services\TaskService;
+    use Illuminate\Http\Request;
 
     class TaskController extends Controller
     {
@@ -34,5 +35,16 @@
         {
             $response = $this->taskService->createTask($request);
             return response()->json($response);
+        }
+
+        public function addPrerequisites(Request $request)
+        {
+            $response = $this->taskService->addPrerequisites($request);
+            return response()->json($response);
+        }
+
+        public function order()
+        {
+            return response()->json($this->taskService->orderTasks());
         }
     }

@@ -43,7 +43,7 @@
                     <select name="prerequisites" id="prerequisites" class="form-select">
                         <option value="">Select Prerequisites</option>
                         @foreach($tasks as $task)
-                            <option value="{{ $task->id }}">{{ $task->title }}</option>
+                            <option value="{{ $task['id'] }}">{{ $task['title'] }}</option>
                         @endforeach
                     </select>
                 </div>
